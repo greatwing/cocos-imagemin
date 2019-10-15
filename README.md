@@ -1,4 +1,8 @@
-# cocos-imagemin
-压缩图片的扩展包，适用于CocosCreator2.1.1
+Minify PNG, JPEG images with imagemin
 
-需要安装imagemin: https://github.com/imagemin/imagemin
+Install:
+$ npm install
+
+Usage:
+1. setup path.json
+2. $ npm run imagemin
