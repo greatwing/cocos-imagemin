@@ -3,7 +3,9 @@ const imagemin = require('gulp-imagemin');
 const imageminPngquant = require('imagemin-pngquant');
 const cache = require('gulp-cache');
 const path = require('path');
-const zip = require('gulp-zip');
+const tar = require('gulp-tar');
+const gzip = require('gulp-gzip');
+const chmod = require('gulp-chmod');
 const moment = require("moment")
 const argv = require('minimist')(process.argv.slice(2));
 const exec = require('gulp-exec');
@@ -13,6 +15,13 @@ const ffmpeg = require('gulp-fluent-ffmpeg');
 let config = require(path.resolve("path.json"));
 let rootPath = path.resolve(config.path);
 let resPath = path.join(rootPath, './res');
+
+function buildWeb(cb){
+    if(config.cocoscreator === undefined) {
+        return Promise.reject('cocoscreator is undefined');
+    }
+    return spawn(config.cocoscreator, ['--path', './', '--build', '\"platform=web-mobile;md5Cache=true;debug=false\"'], {stdio: 'inherit'});
+}
 
 function compressImage() {
     let srcPath = path.join(resPath, './**/*.{png,jpg,gif,ico}');
@@ -29,10 +38,11 @@ function compressImage() {
 
 function archiveFile() {
     let timeStamp = moment().format("YYYY-MM-D_HH-mm-ss");
-    let zipPath = path.join(rootPath, "../")
     return gulp.src(path.join(rootPath, "./**/*"), {base:'build'})
-        .pipe(zip(`client_${timeStamp}.zip`))
-        .pipe(gulp.dest(zipPath));
+        .pipe(tar(`client_${timeStamp}.tar`))
+        .pipe(gzip())
+        .pipe(chmod(0o777))
+        .pipe(gulp.dest('./build'));
 }
 
 function compressAudio() {
@@ -53,7 +63,8 @@ exports.clear = () => {
     return Promise.resolve('done');
 }
 
+exports.build = buildWeb;
 exports.compress = compressImage;
 exports.compressAudio = compressAudio;
 exports.archive = archiveFile;
-exports.default = series(compressImage, archiveFile)
+exports.default = series(buildWeb, compressImage, archiveFile)

@@ -7,7 +7,9 @@
     "gulp-cache": "0.4.6",
     "gulp-fluent-ffmpeg": "^2.0.0",
     "vinyl-map": "1.0.2",
-    "gulp-zip": "^5.0.1",
+    "gulp-tar": "3.0.1",
+    "gulp-gzip": "1.4.2",
+    "gulp-chmod": "3.0.0",
     "moment": "^2.24.0",
     "minimist": "^1.2.0"
   },

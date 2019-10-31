@@ -1,4 +1,4 @@
-# 使用gulp-imagemin压缩cocos creator项目里的图片
+## 使用gulp-imagemin压缩cocos creator项目里的图片
 
 ### 安装:  
 npm install
@@ -20,8 +20,8 @@ npm install
     gzip_vary on;
     gzip_disable "MSIE [1-6].";
 ```
-2. 重新加载Nginx  
-    ps -ef|grep nginx
+2. 重新加载Nginx 
+    ps -ef|grep nginx  
     /usr/sbin/nginx -s reload    
     
 3. 用curl测试Gzip是否成功开启  
@@ -40,8 +40,10 @@ npm install
         ~image/                    max;
     }
 ```
+> html不缓存，js、json、图片等资源缓存  
+
 2. 在server块里增加配置  
-expires $expires;
+`expires $expires;`
 
 3. 重新加载Nginx  
 /usr/sbin/nginx -s reload
