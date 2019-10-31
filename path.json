@@ -1,4 +1,3 @@
 {
-    "src": "./images",
-    "dest": "./dest"
+    "path": "./build/web-mobile"
 }
