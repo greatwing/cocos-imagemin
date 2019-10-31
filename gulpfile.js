@@ -16,12 +16,18 @@ let config = require(path.resolve("path.json"));
 let rootPath = path.resolve(config.path);
 let resPath = path.join(rootPath, './res');
 
-function buildWeb(cb){
+function buildWeb(){
     if(config.cocoscreator === undefined) {
         return Promise.reject('cocoscreator is undefined');
     }
     return spawn(config.cocoscreator, ['--path', './', '--build', '\"platform=web-mobile;md5Cache=true;debug=false\"'], {stdio: 'inherit'});
 }
+
+function removeReadonly() {
+  if (/^win/.test(process.platform)) {
+      return spawn('attrib', ['-r', `${resPath}/*`, '/s'], {stdio: 'inherit'});
+  }
+}    
 
 function compressImage() {
     let srcPath = path.join(resPath, './**/*.{png,jpg,gif,ico}');
@@ -67,4 +73,4 @@ exports.build = buildWeb;
 exports.compress = compressImage;
 exports.compressAudio = compressAudio;
 exports.archive = archiveFile;
-exports.default = series(buildWeb, compressImage, archiveFile)
+exports.default = series(buildWeb, removeReadonly, compressImage, archiveFile)
