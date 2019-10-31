@@ -1,4 +1,5 @@
 const gulp = require('gulp');
+const { series } = require('gulp');
 const imagemin = require('gulp-imagemin');
 const imageminPngquant = require('imagemin-pngquant');
 const cache = require('gulp-cache');
@@ -8,7 +9,6 @@ const gzip = require('gulp-gzip');
 const chmod = require('gulp-chmod');
 const moment = require("moment")
 const argv = require('minimist')(process.argv.slice(2));
-const exec = require('gulp-exec');
 const spawn = require('child_process').spawn;
 const ffmpeg = require('gulp-fluent-ffmpeg');
 
